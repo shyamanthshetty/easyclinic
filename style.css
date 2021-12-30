@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Poppins',sans-serif;
 }
 
 header {
@@ -14,8 +15,20 @@ header {
   height: 56px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  background-color: #f0f4ef;
+  justify-content: space-between;
+  background-color: #c7ecda;
+}
+
+.navbar .logo{
+  margin-left: 30px;
+}
+
+.navbar .logo a{
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 25px;
+
 }
 
 .navbar .links {
@@ -27,20 +40,35 @@ header {
   padding: 0 20px;
 }
 
+.navbar .links .link a{
+  text-decoration: none;
+  color: black;
+
+}
+.arrow{
+  margin:0 5px;
+}
 .hero {
   width: 100%;
   height: calc(100vh - 56px);
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 .hero .img {
   width: 50%;
 }
 .hero .text {
   width: 50%;
-  font-size: 25px;
   padding: 30px;
+  text-align: center;
+
+}
+
+.hero .text .heading{
+  font-size: 25px;
+  margin-bottom: 20px;
+
 }
 .menu {
   display: none;
@@ -49,13 +77,37 @@ header {
 .hide {
   display: none !important;
 }
+
+.btn{
+  padding: 0.7rem 1rem;
+  font-size: 20px;
+  margin-top: 20px;
+  border-radius: 20px;
+  border:none;
+  background-color: #1c9657;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+  /* font-weight: bold; */
+
+}
+
+.btn:hover{
+  transform: scale(0.98);
+}
+
 @media (min-width: 600px) {
   .hide {
     display: flex !important;
   }
+
 }
 
 @media (max-width: 600px) {
+  header{
+    background: url('./Doctor.svg') no-repeat center center fixed;
+    background-size: cover;
+  }
   .hero {
     justify-content: center;
     overflow: hidden;
@@ -66,7 +118,7 @@ header {
     top: 56px;
     width: 100%;
     text-align: center;
-    background-color: #f0f4ef;
+    background-color: #c7ecda;
   }
   .navbar .links .link {
     padding: 15px 0;
@@ -76,6 +128,15 @@ header {
   .menu {
     display: block;
     font-size: 35px;
+  }
+
+  .hero{
+    justify-content: center;
+    width: 100%;
+  }
+
+  .hero .text{
+    width: 100%;
   }
 
   .hero .img {
