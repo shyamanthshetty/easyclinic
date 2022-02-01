@@ -67,6 +67,26 @@ class Appointment{
         return 0;
     }
 
+    public function getAppointmentsByPatientId()
+    {
+        $query = "select * from ".$this->table." where App_date='".$this->App_date."' and App_done=0 and P_id=".$this->P_id;
+        $res = $this->conn->query($query);
+        if($res->num_rows > 0){
+            return $res;
+        }
+        return 0;
+    }
+
+    public function getDiagnosedAppointmentsByPatientId()
+    {
+        $query = "select * from ".$this->table." where App_done=1 and P_id=".$this->P_id;
+        $res = $this->conn->query($query);
+        if($res->num_rows > 0){
+            return $res;
+        }
+        return 0;
+    }
+
     public function getAppointment()
     {
         $query = "select * from ".$this->table." where App_id=".$this->App_id;
@@ -76,6 +96,22 @@ class Appointment{
             return $row;
         }
         return 0;
+    }
+
+    public function deleteAppointment()
+    {
+        $query = "delete from " .$this->table." where App_id=".$this->App_id;
+        if($this->conn->query($query))
+            return true;
+        return false;
+    }
+
+    public function updateAppointment()
+    {
+        $query = "update " .$this->table." set App_done=1 where App_id=".$this->App_id;
+        if($this->conn->query($query))
+            return true;
+        return false;
     }
 }
 

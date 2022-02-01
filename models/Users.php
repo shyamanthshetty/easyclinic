@@ -83,6 +83,26 @@ class Users{
         }
         return false;
     }
+
+    public function getClinicName($Doc_id)
+    {
+        $query = "select U_clinic_name from ".$this->table." where Doc_id='".$Doc_id."'";
+        $res = $this->conn->query($query);
+        if($res->num_rows > 0){
+            $row = $res->fetch_assoc();
+            return $row['U_clinic_name'];
+        }
+        return false;
+    }
+    public function getDetailsByDocId()
+    {
+        $query = "select * from ".$this->table." where Doc_id=".$this->Doc_id;
+        $res = $this->conn->query($query);
+        if($res->num_rows > 0){
+            return $res;
+        }
+        return false;
+    }
 }
 
 ?>

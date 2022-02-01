@@ -13,6 +13,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             if(password_verify($_POST['password'],$pat->P_password)){
                 session_start();
                 $_SESSION['user_in'] = true;
+                $_SESSION['user_id'] = $pat->P_id;
                 $_SESSION['user'] = $pat->P_name;
                 header("location:user-dashboard.php");
             }

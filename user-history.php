@@ -9,27 +9,12 @@ if(!isset($_SESSION['user_in']))
     header("location:user-login.php");
     
 $db = new Database();
-$user = new Users($db->connect());
 $app = new Appointment($db->connect());
-$data = $user->clinics();
+$user = new Users($db->connect());
 
-$app->P_id = $_SESSION['user_id']; 
-$app->App_date = date("Y-m-d");
-$appointments = $app->getAppointmentsByPatientId();
+$app->P_id = $_SESSION['user_id'];
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    if(isset($_POST['submit'])){
-        $app->App_time = $_POST['time'];
-        $app->App_date = $_POST['date'];
-        $app->P_id = $_SESSION['user_id'];
-        $user->U_id = $_POST['clinic'];
-        $doc_id = $user->getDocId();
-        $app->Doc_id = $doc_id['Doc_id'];
-        if($app->addAppointment()){
-            header("location:./user-dashboard.php?done=1&msg=Appointment%20Booked%20Successfully");
-        }
-    }
-}
+$appointments = $app->getDiagnosedAppointmentsByPatientId();
 
 
 ?>
@@ -164,11 +149,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <li class="link">
                     <a href="#" class="link-text hide-mob">Home</a>
                 </li>
-                <li class="link active hide-mob">
-                    <a href="#" class="link-text">Dashboard</a>
-                </li>
                 <li class="link hide-mob">
-                    <a href="./user-history.php" class="link-text">History</a>
+                    <a href="./user-dashboard.php" class="link-text">Dashboard</a>
+                </li>
+                <li class="link active hide-mob">
+                    <a href="#" class="link-text">History</a>
                 </li>
                 <li class="link">
                     <a href="./logout.php" class="link-text">Logout</a>
@@ -176,53 +161,20 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             </ul>
         </nav>
     </header>
+    <div class="container mt-5">
+        <h4 class="text-center">Your Appointments History</h4>
 
-    <div class="contain">
-        <div class="card rounded">
-            <h3 class="title text-center mt-4 mb-4">Book Appointment</h3>
-            <form class="px-5 mb-3" method="post" action="./user-dashboard.php">
-                <div class="form-floating mb-3">
-                    <select class="form-select" name="clinic" required id="floatingSelect">
-                        <option disabled selected value> -- select the clinic -- </option>
-                        <?php 
-                            while($row = $data->fetch_assoc()){
-                                echo '<option value="'.$row['U_id'].'">'.$row['U_clinic_name'].'</option>';
-                            }
-                            ?>
-                    </select>
-                    <label for="floatingSelect">Clinic</label>
-                </div>
-                <div class="mb-3">
-                    <input type="date" class="form-control" placeholder="Select Date" required name="date"
-                        min="<?php echo date("Y-m-d"); ?>">
-                </div>
-                <div class="form-floating mb-3">
-                    <select class="form-select" name="time" required id="floatingSelect">
-                        <option value="1" selected>10am-12.30pm</option>
-                        <option value="2">1.30pm-3.00pm</option>
-                        <option value="3">4.00pm-6.30pm</option>
-                    </select>
-                    <label for="floatingSelect">Select Time</label>
-                </div>
+        <?php
 
-                <div class="d-grid gap-2 mb-3">
-                    <button type="submit" class="btn btn-primary btn-color" name="submit">Book</button>
-                </div>
-            </form>
+        if($appointments){ ?>
 
-        </div>
-    </div>
-
-    <div class="container mt-4">
-        <h4 class="text-center mb-3">Todays Appointments</h4>
-        <?php if($appointments) {?>
-        <table class="table table-striped">
+        <table class="table table-striped mt-5 ">
             <thead>
                 <tr>
                     <th scope="col">Date</th>
                     <th scope="col">Clinic</th>
-                    <th scope="col">Timing</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">Timings</th>
+                    <th scope="col">Report</th>
                 </tr>
             </thead>
             <tbody>
@@ -244,29 +196,23 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     else echo '4.00pm-6.30pm';
                     echo '</td>';
                     echo '<td>';
-                    echo '<button onclick="deleteAppointment('.$row['App_id'].')" class="btn btn-danger">Delete</button>';
+                    echo '<button onclick="deleteAppointment('.$row['App_id'].')" class="btn btn-success">Download</button>';
                     echo '</td>';
                     echo '</tr>';
                 }
-                
-                ?>
+
+?>
             </tbody>
         </table>
-        <?php } else {
-            echo "<div class='m-3 text-center'>No Appointments as of Now 😍</div>";
+
+
+        <?php } else{
+            
+            
         }?>
+
     </div>
     <script>
-    let urls = new URLSearchParams(window.location.search)
-    let done = urls.get('done')
-    if (done) {
-        alert(urls.get('msg'))
-    }
-    const deleteAppointment = (id) => {
-        let confirm = window.confirm("Are you sure want to delete ??")
-        if (confirm)
-            window.location.href = "./delete-appointment.php?App_id=" + id
-    }
     </script>
 </body>
 

@@ -196,7 +196,7 @@ $appointments = $app->getAppointments();
                             echo '</td>';
                             echo "<td>".$pat->getPatientNameById($row['P_id'])."</td>";
                             echo "<td>".$row['App_date']."</td>";
-                            echo '<td><a href="./treatment.php?App_id='.$row['App_id'].'" class="btn btn-primary">Treat Patient</a></td>';
+                            echo '<td><a href="./diagnosis.php?App_id='.$row['App_id'].'" class="btn btn-primary">Treat Patient</a></td>';
                             echo '</tr>';
                         }
                         ?>

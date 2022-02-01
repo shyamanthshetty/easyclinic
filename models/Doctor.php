@@ -23,6 +23,16 @@ class Doctor{
         }
         return false;
     }
+
+    public function getDoctor()
+    {
+        $query = "select * from ".$this->table." where Doc_id=".$this->Doc_id;
+        $res = $this->conn->query($query);
+        if($res->num_rows > 0){
+            return $res;
+        }
+        return false;
+    }
 }
 
 ?>

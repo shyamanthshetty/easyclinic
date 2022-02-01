@@ -39,14 +39,24 @@ class Patient{
     }
     public function getDetailsByEmail()
     {
-        $query = "select P_name,P_contact,P_password from ".$this->table." where P_contact='".$this->P_contact."'";
+        $query = "select P_id,P_name,P_contact,P_password from ".$this->table." where P_contact='".$this->P_contact."'";
         $res = $this->conn->query($query);
         if($res->num_rows > 0){
             $row = $res->fetch_assoc();
+            $this->P_id = $row['P_id'];
             $this->P_name = $row['P_name'];
             $this->P_contact = $row['P_contact'];
             $this->P_password = $row['P_password'];
             return true;
+        }
+        return false;
+    }
+    public function getPatientDetails()
+    {
+        $query = "select * from ".$this->table." where P_id=".$this->P_id;
+        $res = $this->conn->query($query);
+        if($res->num_rows > 0){
+            return $res;
         }
         return false;
     }
