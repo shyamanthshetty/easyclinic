@@ -33,6 +33,15 @@ class Doctor{
         }
         return false;
     }
+
+    public function updateDoctor()
+    {
+        $query = "update ".$this->table." set Doc_name='".$this->Doc_name."' , Doc_contact='".$this->Doc_contact."' , Doc_specialization='".$this->Doc_specialization."' where Doc_id=".$this->Doc_id;
+        if($this->conn->query($query)){
+            return true;
+        }
+        return false;
+    }
 }
 
 ?>

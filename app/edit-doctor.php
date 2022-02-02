@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 session_start();
 
@@ -6,11 +6,30 @@ if(!$_SESSION['logged_in']){
     header("location:../login.php");
 }
 
-if(!isset($_GET['diag_id'])){
-    die('Invalid diag_id');
-}
+include_once "../models/Doctor.php";
+include_once "../config/db.php";
 
+$db = new Database();
+$doc = new Doctor($db->connect());
+
+$doc->Doc_id = $_SESSION['doc_id'];
+$doctor = $doc->getDoctor();
+$doctor = $doctor->fetch_assoc();
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['submit'])){
+        $doc->Doc_id = $_POST['id'];
+        $doc->Doc_name = $_POST['name'];
+        $doc->Doc_contact = $_POST['contact'];
+        $doc->Doc_specialization = $_POST['quali'];
+        if($doc->updateDoctor()){
+            header("location:./doctor-info.php");
+        }
+        else header("location:./edit-doctor.php?done=1&msg=Something%20Went%20Wrong");
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,33 +65,27 @@ if(!isset($_GET['diag_id'])){
         <?php include_once "../partials/dashboard-nav.php" ?>
         <!-- Begin Page Content -->
         <div class="container-fluid">
-            <h1 class="h3 my-4 text-gray-800 text-center">Prescription</h1>
-
+            <h1 class="h3 my-4 text-gray-800 text-center">Edit Doctor Info</h1>
             <div class="card border-0 shadow container p-5" style="max-width: 500px;">
-                <form action="./add-prescription.php?app_id=<?php echo $_GET['app_id']; ?>" method="POST">
-                    <input type="hidden" name="diag_id" value="<?php echo $_GET['diag_id']; ?>">
+                <form action="./edit-doctor.php" method="POST">
                     <div class="form-group">
-                        <input type="text" name="medicine" class="form-control" id="" placeholder="Enter Medicine"
+                        <input type="hidden" name="id" value="<?php echo $doctor['Doc_id']; ?>">
+                        <input type="text" class="form-control" id="" value="<?php echo $doctor['Doc_id']; ?>" disabled
                             required>
                     </div>
                     <div class="form-group">
-                        <label for="check">Directions</label><br />
-                        Morining : <input type="checkbox" name="morning" value="1" id="">
-                        Afternoon : <input type="checkbox" name="afternoon" value="2" id="">
-                        Evening : <input type="checkbox" name="evening" value="3" id="">
+                        <input type="text" name="name" class="form-control" id=""
+                            value="<?php echo $doctor['Doc_name'] ?>" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" name="course" class="form-control" id="" placeholder="Enter the no days"
-                            pattern="\d" required>
+                        <input type="tel" name="contact" class="form-control" id=""
+                            value="<?php echo $doctor['Doc_contact'] ?>" required>
                     </div>
                     <div class="form-group">
-                        <select name="instructions" id="" class="form-control" required>
-                            <option value="">-- Select Instructions --</option>
-                            <option value="1">Before Food</option>
-                            <option value="2">After Food</option>
-                        </select>
+                        <input type="text" name="quali" class="form-control" id=""
+                            value="<?php echo $doctor['Doc_specialization'] ?>" required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block" name="submit">Add Prescription</button>
+                    <button type="submit" class="btn btn-primary btn-block" name="submit">Update Doctor Info</button>
                 </form>
             </div>
             <!-- /.container-fluid -->
@@ -90,5 +103,12 @@ if(!isset($_GET['diag_id'])){
 
     <?php include_once "../partials/footer.php" ?>
 </body>
+<script>
+let urls = new URLSearchParams(window.location.search)
+let done = urls.get('done')
+if (done) {
+    alert(urls.get('msg'))
+}
+</script>
 
 </html>

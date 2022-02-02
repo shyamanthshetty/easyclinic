@@ -32,15 +32,17 @@ class Diagnosis{
             return true;
         }
         return false;
+    }
 
+    public function getAllDiagnosis()
+    {
+        $query = "select * from ".$this->table;
+        $res = $this->conn->query($query);
+        if($res->num_rows > 0){
+            return $res;
+        }
 
-        // $query = "insert into ".$this->table." (diagnosis,app_id) values ('".$this->diagnosis."',".$this->app_id.")";
-        // var_dump($query);
-        // die("ksd");
-        // if($this->conn->query($query)){
-        //     return true;
-        // }
-        // return false;
+        return false;
     }
 
 }

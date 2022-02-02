@@ -31,78 +31,29 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Doctor Details</h6>
-                <a class="collapse-item" href="#">View Doctor</a>
-                <a class="collapse-item" href="#">Edit Doctor</a>
-                <a class="collapse-item" href="#">Delete Doctor</a>
+                <a class="collapse-item" href="./doctor-info.php">Doctor Info</a>
+                <a class="collapse-item" href="./edit-doctor.php">Edit Doctor Info</a>
             </div>
         </div>
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-            aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Patient Section</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Patient Details</h6>
-                <a class="collapse-item" href="#">Add Patient</a>
-                <a class="collapse-item" href="#">View Patient</a>
-                <a class="collapse-item" href="#">Edit Patient</a>
-            </div>
-        </div>
-    </li>
+
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTreatment"
             aria-expanded="true" aria-controls="collapseTreatment">
             <i class="fas fa-fw fa-wrench"></i>
-            <span>Treatment Section</span>
+            <span>Diagnosis Section</span>
         </a>
         <div id="collapseTreatment" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Treatment Details</h6>
-                <a class="collapse-item" href="#">Add Treatment</a>
-                <a class="collapse-item" href="#">View Treatment</a>
+                <h6 class="collapse-header">Diagnosis Details</h6>
+                <a class="collapse-item" href="./diagnosis-history.php">Diagnosis History</a>
             </div>
         </div>
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePresc" aria-expanded="true"
-            aria-controls="collapsePresc">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Prescription Section</span>
-        </a>
-        <div id="collapsePresc" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Prescription Details</h6>
-                <a class="collapse-item" href="#">Add Prescription</a>
-                <a class="collapse-item" href="#">View Prescription</a>
-                <a class="collapse-item" href="#">Edit Prescription</a>
-            </div>
-        </div>
-    </li>
-
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReport" aria-expanded="true"
-            aria-controls="collapseReport">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Report Section</span>
-        </a>
-        <div id="collapseReport" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Report Details</h6>
-                <a class="collapse-item" href="#">Add Report</a>
-                <a class="collapse-item" href="#">View Report</a>
-            </div>
-        </div>
-    </li>
     <hr class="sidebar-divider my-0" />
 
     <!-- Sidebar Toggler (Sidebar) -->
@@ -130,7 +81,6 @@
             <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                 <i class="fa fa-bars"></i>
             </button>
-
             <div class="mx-3 text-capitalize"><?php echo $_SESSION['clinic']; ?></div>
 
 
@@ -177,19 +127,6 @@
                     shadow
                     animated--grow-in
                   " aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Profile
-                        </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Settings
-                        </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Activity Log
-                        </a>
-                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                             Logout

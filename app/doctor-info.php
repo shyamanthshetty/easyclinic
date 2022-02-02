@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 session_start();
 
@@ -6,11 +6,17 @@ if(!$_SESSION['logged_in']){
     header("location:../login.php");
 }
 
-if(!isset($_GET['diag_id'])){
-    die('Invalid diag_id');
-}
+include_once "../models/Doctor.php";
+include_once "../config/db.php";
 
+$db = new Database();
+$doc = new Doctor($db->connect());
+
+$doc->Doc_id = $_SESSION['doc_id'];
+$doctor = $doc->getDoctor();
+$doctor = $doctor->fetch_assoc();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,34 +52,43 @@ if(!isset($_GET['diag_id'])){
         <?php include_once "../partials/dashboard-nav.php" ?>
         <!-- Begin Page Content -->
         <div class="container-fluid">
-            <h1 class="h3 my-4 text-gray-800 text-center">Prescription</h1>
+            <h1 class="h3 my-4 text-gray-800 text-center">Doctor Info</h1>
+            <div class="container mx-auto" style="max-width: 500px;">
+                <div class="card shadow border-0 p-3">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h6>Doctor ID : </h6>
 
-            <div class="card border-0 shadow container p-5" style="max-width: 500px;">
-                <form action="./add-prescription.php?app_id=<?php echo $_GET['app_id']; ?>" method="POST">
-                    <input type="hidden" name="diag_id" value="<?php echo $_GET['diag_id']; ?>">
-                    <div class="form-group">
-                        <input type="text" name="medicine" class="form-control" id="" placeholder="Enter Medicine"
-                            required>
+                        </div>
+                        <div class="col-sm-6">
+                            <?php echo $doctor['Doc_id']; ?>
+                        </div>
+                        <hr>
+                        <div class="col-sm-6">
+                            <h6>Doctor Name : </h6>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <?php echo $doctor['Doc_name']; ?>
+                        </div>
+                        <hr>
+                        <div class="col-sm-6">
+                            <h6>Doctor Contact : </h6>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <?php echo $doctor['Doc_contact']; ?>
+                        </div>
+                        <hr>
+                        <div class="col-sm-6">
+                            <h6>Doctor Qualification : </h6>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <?php echo $doctor['Doc_specialization']; ?>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="check">Directions</label><br />
-                        Morining : <input type="checkbox" name="morning" value="1" id="">
-                        Afternoon : <input type="checkbox" name="afternoon" value="2" id="">
-                        Evening : <input type="checkbox" name="evening" value="3" id="">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" name="course" class="form-control" id="" placeholder="Enter the no days"
-                            pattern="\d" required>
-                    </div>
-                    <div class="form-group">
-                        <select name="instructions" id="" class="form-control" required>
-                            <option value="">-- Select Instructions --</option>
-                            <option value="1">Before Food</option>
-                            <option value="2">After Food</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block" name="submit">Add Prescription</button>
-                </form>
+                </div>
             </div>
             <!-- /.container-fluid -->
         </div> <!-- end -->

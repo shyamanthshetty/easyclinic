@@ -2,13 +2,6 @@
 
 session_start();
 
-if(!$_SESSION['logged_in']){
-    header("location:../login.php");
-}
-
-if(!isset($_GET['App_id'])){
-    die('Invalid App_id');
-}
 
 
 include_once "../models/Appointment.php";
@@ -30,12 +23,18 @@ $users = new Users($db->connect());
 $app->App_id = $_GET['App_id'];
 $app->updateAppointment();
 $appointment = $app->getAppointment();
+if(!$appointment){
+    die("Invalid Report");
+}
 $pat->P_id = $appointment['P_id'];
 $pdetails = $pat->getPatientDetails();
 $doc->Doc_id = $appointment['Doc_id'];
 $doc_details = $doc->getDoctor();
 $diag->app_id = $_GET['App_id'];
 $diagnosis = $diag->getDiagnosis();
+if(!$diagnosis){
+    die("Invalid Report");
+}
 $row = $diagnosis->fetch_assoc();
 $diag_id = $row['diag_id'];
 $presc->diag_id = $diag_id;
@@ -58,7 +57,7 @@ $user_details = $user_details->fetch_assoc();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
         integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous" />
-    <title>Document</title>
+    <title>Report</title>
     <style>
     .box {
         /* background-color: red; */
@@ -75,6 +74,13 @@ $user_details = $user_details->fetch_assoc();
         justify-content: center;
         flex-direction: column;
     }
+
+    .img {
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     </style>
 </head>
 
@@ -83,12 +89,12 @@ $user_details = $user_details->fetch_assoc();
         <div class="row">
             <div class="col-sm-6">
                 <img src="../static/images/2.png" alt="" srcset="" />
-                <h4><?php echo $doc_details['Doc_name']; ?></h4>
-                <h5><?php echo $doc_details['Doc_specialization']; ?></h5>
+                <h4 class="text-capitalize"><?php echo $doc_details['Doc_name']; ?></h4>
+                <h5 class="text-uppercase"><?php echo $doc_details['Doc_specialization']; ?></h5>
                 <h5>Doc ID : <?php echo $doc_details['Doc_id']; ?></h5>
             </div>
             <div class="col-sm-6 clinic text-center">
-                <h4><?php echo $user_details['U_clinic_name']; ?></h4>
+                <h4 class="text-capitalize"><?php echo $user_details['U_clinic_name']; ?></h4>
                 <h5><?php echo $user_details['U_email']; ?></h6>
             </div>
         </div>
@@ -96,7 +102,8 @@ $user_details = $user_details->fetch_assoc();
         <div class="patients mt-5">
             <div class="row">
                 <div class="col-sm-6">
-                    <h5>Patient Name : <span class="font-weight-bold"><?php echo $pdetails['P_name'] ?></span></h5>
+                    <h5 class="text-capitalize">Patient Name : <span
+                            class="font-weight-bold"><?php echo $pdetails['P_name'] ?></span></h5>
                     <h5>Patient Phone Number : <span
                             class="font-weight-bold"><?php echo $pdetails['P_contact'] ?></span></h5>
                     <h5>Patient ID : <span class="font-weight-bold"><?php echo $pdetails['P_id'] ?></span></h5>
@@ -149,22 +156,33 @@ $user_details = $user_details->fetch_assoc();
                 </tbody>
             </table>
         </div>
+        <!-- <img src="https://chart.googleapis.com/chart?cht=qr&chs=200x300&chl=https://www.easyclinics.live" alt=""> -->
         <hr>
         <div class="signature mt-5">
-            <h4 class="pt-3"><?php echo $doc_details['Doc_name']; ?></h4>
-            <h5><?php echo $doc_details['Doc_specialization']; ?></h5>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4 class="pt-3 text-capitalize"><?php echo $doc_details['Doc_name']; ?></h4>
+                    <h5 class="text-uppercase"><?php echo $doc_details['Doc_specialization']; ?></h5>
+                </div>
+                <div class="col-sm-6 img">
+                    <img src="https://chart.googleapis.com/chart?cht=qr&chs=200x100&chl=http://localhost/easyclinic/app/report.php?App_id=<?php echo $_GET['App_id'];?>"
+                        alt="">
+                </div>
+            </div>
         </div>
         <hr>
         <div class="footer text-center">
-            <span>For More Information contact <?php echo $user_details['U_email']; ?></span>
+            <span>For More Information contact <a href="mailto:<?php echo $user_details['U_email']; ?>"
+                    class="text-dark"><?php echo $user_details['U_email']; ?></a>
+            </span>
             <p>
-                <a href="www.easyclinics.live">www.easyclinics.live</a>
+                <a href="https://www.easyclinics.live">www.easyclinics.live</a>
             </p>
         </div>
     </div>
     <div class="btn text-center w-100 my-3">
         <button id="print" class="btn btn-primary">Print Report</button>
-        <a href="./dashboard.php" class="btn btn-primary">Dashboard</a>
+        <a href="./dashboard.php" class="btn btn-primary" id="dash">Dashboard</a>
 
     </div>
 </body>
@@ -179,8 +197,10 @@ $user_details = $user_details->fetch_assoc();
 </script>
 <script>
 const btn = document.querySelector('#print')
+const dash = document.querySelector('#dash')
 btn.addEventListener('click', () => {
     btn.style.display = 'none';
+    dash.style.display = 'none';
     window.print()
 })
 </script>

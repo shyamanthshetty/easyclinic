@@ -41,13 +41,17 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
+    <link rel="manifest" href="./site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <title>login</title>
+    <title>Dashboard</title>
     <style>
     * {
         margin: 0;
@@ -158,7 +162,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 <body>
     <header>
-        <div class="logo">EASY<span class="sub-logo">CLINIC</span></div>
+        <div class="logo">EASY<span class="sub-logo">CLINICS</span></div>
         <nav class="navs">
             <ul class="links">
                 <li class="link">
@@ -169,6 +173,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 </li>
                 <li class="link hide-mob">
                     <a href="./user-history.php" class="link-text">History</a>
+                </li>
+                <li class="link hide-mob">
+                    <a href="./user-edit.php" class="link-text">Edit Info</a>
                 </li>
                 <li class="link">
                     <a href="./logout.php" class="link-text">Logout</a>
@@ -253,7 +260,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             </tbody>
         </table>
         <?php } else {
-            echo "<div class='m-3 text-center'>No Appointments as of Now 😍</div>";
+            echo "<div class='m-3 text-center'>No Appointments as of Now</div>";
         }?>
     </div>
     <script>

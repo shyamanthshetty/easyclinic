@@ -1,20 +1,38 @@
 <?php
 
 include_once "./config/db.php";
-include_once "./models/Users.php";
-include_once "./models/Appointment.php";
+include_once "./models/Patient.php";
 
 session_start();
 if(!isset($_SESSION['user_in']))
     header("location:user-login.php");
     
 $db = new Database();
-$app = new Appointment($db->connect());
-$user = new Users($db->connect());
+$pat = new Patient($db->connect());
+$pat->P_id = $_SESSION['user_id'];
+$patients = $pat->getPatientDetails();
+$patients = $patients->fetch_assoc();
+$passwd = $patients['P_password'];
 
-$app->P_id = $_SESSION['user_id'];
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['submit'])){
+        $pat->P_id = $_POST['id'];
+        $pat->P_name = $_POST['name'];
+        $pat->P_contact = $_POST['contact'];
+        $pat->P_address = $_POST['address'];
+        if(empty($_POST['password'])){
+            $pat->P_password = $passwd;
+        }else{
+            $pat->P_password = password_hash($_POST['password'],PASSWORD_DEFAULT);
+        }
 
-$appointments = $app->getDiagnosedAppointmentsByPatientId();
+        if($pat->updatePatient()){
+            header("location:./user-dashboard.php?done=1&msg=Account%20Updated%20Successfully");
+        }else{
+            header("location:./user-dashboard.php?done=1&msg=Something%20Went%20Wrong");
+        }
+    }
+}
 
 
 ?>
@@ -36,7 +54,7 @@ $appointments = $app->getDiagnosedAppointmentsByPatientId();
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <title>History</title>
+    <title>Edit User</title>
     <style>
     * {
         margin: 0;
@@ -156,8 +174,11 @@ $appointments = $app->getDiagnosedAppointmentsByPatientId();
                 <li class="link hide-mob">
                     <a href="./user-dashboard.php" class="link-text">Dashboard</a>
                 </li>
-                <li class="link active hide-mob">
-                    <a href="#" class="link-text">History</a>
+                <li class="link hide-mob">
+                    <a href="./user-history.php" class="link-text">History</a>
+                </li>
+                <li class="link hide-mob active">
+                    <a href="./user-edit.php" class="link-text">Edit Info</a>
                 </li>
                 <li class="link">
                     <a href="./logout.php" class="link-text">Logout</a>
@@ -165,58 +186,44 @@ $appointments = $app->getDiagnosedAppointmentsByPatientId();
             </ul>
         </nav>
     </header>
-    <div class="container mt-5">
-        <h4 class="text-center">Your Appointments History</h4>
 
-        <?php
+    <div class="contain">
+        <div class="card rounded">
+            <h3 class="title text-center mt-4 mb-4">Edit User Info</h3>
+            <form class="px-5 mb-3" method="post" action="./user-edit.php">
+                <input type="hidden" name="id" value="<?php echo $patients['P_id']; ?>">
+                <div class="mb-3">
+                    <input type="text" class="form-control" required name="name"
+                        value="<?php echo $patients['P_name']; ?>">
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" required name="contact"
+                        value="<?php echo $patients['P_contact']; ?>">
+                </div>
 
-        if($appointments){ ?>
+                <div class="mb-3">
+                    <input type="text" class="form-control" required name="address"
+                        value="<?php echo $patients['P_address']; ?>">
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" name="password" placeholder="Enter new password"
+                        pattern="[A-Za-z0-9]{6,}">
+                </div>
+                <div class="d-grid gap-2 mb-3">
+                    <button type="submit" class="btn btn-primary btn-color" name="submit">Edit Info</button>
+                </div>
+            </form>
 
-        <table class="table table-striped mt-5 ">
-            <thead>
-                <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Clinic</th>
-                    <th scope="col">Timings</th>
-                    <th scope="col">Report</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-
-                while($row = $appointments->fetch_assoc()){
-                    echo '<tr>';
-                    echo '<td>';
-                    echo $row['App_date'];
-                    echo '</td>';
-                    echo '<td>';
-                    echo $user->getClinicName($row['Doc_id']);
-                    echo '</td>';
-                    echo '<td>';
-                    if($row['App_time'] === '1')
-                        echo '10am-12.30pm';
-                    else if($row['App_time'] === '2')
-                        echo '1.30pm-3.00pm';
-                    else echo '4.00pm-6.30pm';
-                    echo '</td>';
-                    echo '<td>';
-                    echo '<a href="./app/report.php?App_id='.$row['App_id'].'" class="btn btn-success">Download</a>';
-                    echo '</td>';
-                    echo '</tr>';
-                }
-
-?>
-            </tbody>
-        </table>
-
-
-        <?php } else{
-            echo "No Treatment history";
-            
-        }?>
-
+        </div>
     </div>
+
+
     <script>
+    let urls = new URLSearchParams(window.location.search)
+    let done = urls.get('done')
+    if (done) {
+        alert(urls.get('msg'))
+    }
     </script>
 </body>
 

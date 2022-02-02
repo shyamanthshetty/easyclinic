@@ -60,6 +60,15 @@ class Patient{
         }
         return false;
     }
+
+    public function updatePatient()
+    {
+        $query = "update ".$this->table." set P_name='".$this->P_name."' , P_contact='".$this->P_contact."' , P_address='".$this->P_address."' , P_password='".$this->P_password."' where P_id=".$this->P_id;
+        if($this->conn->query($query)){
+            return true;
+        }
+        return false;
+    }
 }
 
 ?>
