@@ -18,7 +18,8 @@ $pat = new Patient($db->connect());
 $diag = new Diagnosis($db->connect());
 $doc = new Doctor($db->connect());
 
-$diagnosis = $diag->getAllDiagnosis();
+$app->Doc_id = $_SESSION['doc_id'];
+$app_id = $app->getAllAppointmentByDocId();
 ?>
 
 
@@ -59,6 +60,8 @@ $diagnosis = $diag->getAllDiagnosis();
             <h1 class="h3 my-4 text-gray-800 text-center">Diagnosis History</h1>
 
             <div class="container">
+                <?php 
+                if($app_id){ ?>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -72,31 +75,59 @@ $diagnosis = $diag->getAllDiagnosis();
                     <tbody>
                         <?php 
                         
-                        while($row = $diagnosis->fetch_assoc()){
+                        while($row = $app_id->fetch_assoc()){
+                            $diag->app_id = $row['App_id'];
+                            $diagnosis = $diag->getDiagnosis();
+                            $diagnosis = $diagnosis->fetch_assoc();
                             echo '<tr>';
                             echo '<td>';
-                            echo $row['diag_id'];
+                            echo $diagnosis['diag_id'];
                             echo '</td>';
-                            $app->App_id = $row['app_id'];
-                            $appointment = $app->getAppointment();
                             echo '<td>';
+                            $app->App_id = $diagnosis['app_id'];
+                            $appointment = $app->getAppointment();
                             echo $appointment['App_date'];
                             echo '</td>';
                             echo '<td>';
-                            echo $row['diagnosis'];
+                            echo $diagnosis['diagnosis'];
                             echo '</td>';
                             echo '<td>';
                             echo $pat->getPatientNameById($appointment['P_id']);
                             echo '</td>';
                             echo '<td>';
-                            echo '<a href="./report.php?App_id='.$row['app_id'].'" class="btn btn-primary">View Report</a>';
-                            echo '</td>';
+                             echo '<a href="./report.php?App_id='.$diagnosis['app_id'].'" class="btn btn-primary">View Report</a>';
+                             echo '</td>';
                             echo '</tr>';
                         }
+                        // while($row = $diagnosis->fetch_assoc()){
+                        //     echo '<tr>';
+                        //     echo '<td>';
+                        //     echo $row['diag_id'];
+                        //     echo '</td>';
+                        //     $app->App_id = $row['app_id'];
+                        //     $appointment = $app->getAppointment();
+                        //     echo '<td>';
+                        //     echo $appointment['App_date'];
+                        //     echo '</td>';
+                        //     echo '<td>';
+                        //     echo $row['diagnosis'];
+                        //     echo '</td>';
+                        //     echo '<td>';
+                        //     echo $pat->getPatientNameById($appointment['P_id']);
+                        //     echo '</td>';
+                            //  echo '<td>';
+                            //  echo '<a href="./report.php?App_id='.$row['app_id'].'" class="btn btn-primary">View Report</a>';
+                            //  echo '</td>';
+                        //     echo '</tr>';
+                        // }
                         
                         ?>
                     </tbody>
                 </table>
+                <?php }else{
+
+                    echo "No history";
+                    }?>
             </div>
 
             <!-- /.container-fluid -->

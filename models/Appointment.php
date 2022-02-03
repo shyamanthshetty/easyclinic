@@ -113,6 +113,15 @@ class Appointment{
             return true;
         return false;
     }
+    public function getAllAppointmentByDocId()
+    {
+        $query = "select App_id from ".$this->table." where Doc_id=".$this->Doc_id;
+        $res = $this->conn->query($query);
+        if($res->num_rows > 0){
+            return $res;
+        }
+        return false;
+    }
 }
 
 ?>

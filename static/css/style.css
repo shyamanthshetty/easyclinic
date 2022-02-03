@@ -117,6 +117,9 @@ header {
     justify-content: center;
     overflow: hidden;
   }
+  .navbar .logo {
+    margin-left: 0;
+  }
   .navbar .links {
     display: block;
     position: absolute;
@@ -131,8 +134,8 @@ header {
     border-bottom: 1px solid #ccc;
   }
   .menu {
-    display: block;
-    font-size: 35px;
+    /* display: block; */
+    /* font-size: 35px; */
   }
 
   .hero {
