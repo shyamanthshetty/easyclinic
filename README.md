@@ -8,7 +8,7 @@ EasyClinics is a HealthTech software tool that helps medical staffs such as doct
 
 - [Purpose](#Purpose)
 - [Scope](#Scope)
-- [Tech](#Tech)
+- [Tech](#Tech-Stack)
 - [Demo](#Demo)
 - [Run Locally](#Run-Locally)
 - [Authors](#Authors)
