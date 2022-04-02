@@ -85,5 +85,5 @@ Start the server
 
 ## Support
 
-For support, email shettyshyamanth@gmail.com.
+For support, email contact@easyclinics.live.
 
