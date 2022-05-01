@@ -76,10 +76,14 @@ Start the server
 
 - [@Subrahmanya-Mayya](https://www.github.com/Subrahmanya-Mayya)
 
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/subrahmanya-mayya)
+
 
 ## Contributers
 
 - [@shyamanthshetty](https://www.github.com/shyamanthshetty)
+
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/)
 
 
 
