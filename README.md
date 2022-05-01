@@ -1,5 +1,5 @@
 
-# EasyClinics
+![Logo](https://res.cloudinary.com/daj9bab6r/image/upload/v1644245235/easyclinics.live/4_msjets.png)
 
 EasyClinics is a HealthTech software tool that helps medical staffs such as doctors, nurses, and clinic assistants to better manage their clinic, improve clinic efficiency, streamline clinic operations, make accurate claims for patients, reduce clinic expenditure.
 
